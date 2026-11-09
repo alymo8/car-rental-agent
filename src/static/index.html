@@ -1,0 +1,921 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Roadway Assistant</title>
+<style>
+  :root {
+    --bg: #f4f5f7;
+    --panel: #ffffff;
+    --ink: #1d2733;
+    --muted: #6b7684;
+    --line: #e1e4e8;
+    --slate: #2f3e4e;
+    --agent: #eceef1;
+    --ok: #1f7a4d;
+    --warn: #b06d00;
+    --bad: #a3361f;
+    --info: #2d5f9a;
+    --mono: ui-monospace, "Cascadia Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body {
+    font-family: var(--sans);
+    font-size: 15px;
+    color: var(--ink);
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+  }
+  button {
+    font: inherit;
+    font-size: 13px;
+    border: 1px solid var(--line);
+    background: var(--panel);
+    color: var(--ink);
+    border-radius: 6px;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  button:hover:not(:disabled) { border-color: var(--slate); }
+  button:disabled { opacity: 0.45; cursor: default; }
+  button.primary { background: var(--slate); border-color: var(--slate); color: #fff; }
+  .hidden { display: none !important; }
+
+  /* Header */
+  header {
+    background: var(--panel);
+    border-bottom: 1px solid var(--line);
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+  .accent { border-top: 4px solid #1f5fbf; }
+  .brand { display: flex; align-items: baseline; gap: 12px; }
+  .brand h1 { font-size: 19px; margin: 0; font-weight: 650; letter-spacing: 0.2px; }
+  .session { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .scenarios { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; flex: 1; }
+  .scenario { display: inline-flex; }
+  .scenario button:first-child { border-radius: 6px 0 0 6px; }
+  .scenario button.play { border-radius: 0 6px 6px 0; border-left: none; padding: 5px 8px; }
+  .controls { display: flex; gap: 8px; }
+
+  /* Columns */
+  main {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 55fr 45fr;
+    gap: 16px;
+    padding: 16px 20px 20px;
+  }
+  section.pane {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+  }
+  .pane h2 {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--muted);
+    margin: 0;
+    padding: 12px 16px 10px;
+    border-bottom: 1px solid var(--line);
+    font-weight: 600;
+  }
+
+  /* Chat */
+  #chat {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .bubble {
+    max-width: 78%;
+    padding: 9px 13px;
+    border-radius: 14px;
+    line-height: 1.45;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+  .bubble.agent { background: var(--agent); align-self: flex-start; border-bottom-left-radius: 4px; }
+  .bubble.user { background: var(--slate); color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; }
+  .thinking { align-self: flex-start; color: var(--muted); font-size: 13px; padding: 4px 6px; }
+  .thinking span { animation: blink 1.2s infinite; }
+  .thinking span:nth-child(2) { animation-delay: 0.2s; }
+  .thinking span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes blink { 0%, 80%, 100% { opacity: 0.2; } 40% { opacity: 1; } }
+
+  .paycard {
+    align-self: center;
+    width: min(380px, 92%);
+    border: 1.5px solid var(--slate);
+    border-radius: 12px;
+    padding: 14px 16px;
+    background: #fbfcfd;
+    box-shadow: 0 2px 10px rgba(29, 39, 51, 0.08);
+  }
+  .paycard .title { font-weight: 650; display: flex; align-items: center; gap: 8px; }
+  .paycard .sub { color: var(--muted); font-size: 12px; margin: 2px 0 10px; }
+  .paycard .what { margin-bottom: 12px; }
+  .paycard .fields { display: flex; gap: 10px; margin-bottom: 12px; }
+  .paycard label { font-size: 12px; color: var(--muted); display: flex; flex-direction: column; gap: 4px; flex: 1; }
+  .paycard input {
+    font: inherit;
+    font-family: var(--mono);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 7px 9px;
+    width: 100%;
+  }
+  .paycard input:focus { outline: 2px solid var(--slate); outline-offset: -1px; }
+  .paycard .actions { display: flex; gap: 8px; justify-content: flex-end; }
+  .paycard .note { font-size: 12px; color: var(--bad); margin-top: 8px; }
+  .paycard.done {
+    width: auto;
+    padding: 6px 12px;
+    border-width: 1px;
+    border-color: var(--line);
+    box-shadow: none;
+    font-size: 13px;
+    color: var(--muted);
+    background: transparent;
+  }
+
+  /* Composer */
+  .composer { border-top: 1px solid var(--line); padding: 10px 16px 12px; }
+  #notice { font-size: 13px; color: var(--bad); margin-bottom: 6px; }
+  #notice.soft { color: var(--muted); }
+  .compose-row { display: flex; gap: 8px; align-items: flex-end; }
+  #input {
+    flex: 1;
+    font: inherit;
+    resize: none;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 8px 10px;
+    min-height: 40px;
+    max-height: 120px;
+  }
+  #input:focus { outline: 2px solid var(--slate); outline-offset: -1px; }
+  #send { padding: 9px 18px; font-size: 14px; }
+  #cues { margin-top: 8px; display: flex; flex-direction: column; gap: 4px; }
+  #cues .cue-title { font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); }
+  #cues button {
+    text-align: left;
+    font-size: 12.5px;
+    color: var(--slate);
+    border-style: dashed;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Under the hood */
+  .status { padding: 10px 16px 12px; border-bottom: 1px solid var(--line); display: grid; gap: 6px; }
+  .srow { display: grid; grid-template-columns: 84px 1fr; gap: 8px; font-size: 13.5px; }
+  .srow .k { color: var(--muted); }
+  .srow .v { font-family: var(--mono); font-size: 12.5px; overflow-wrap: anywhere; }
+  .pill { display: inline-block; padding: 0 7px; border-radius: 9px; font-size: 11.5px; font-family: var(--sans); margin-right: 6px; }
+  .pill.good { background: #e3f3ea; color: var(--ok); }
+  .pill.mid { background: #fdf0d9; color: var(--warn); }
+  .pill.none { background: var(--agent); color: var(--muted); }
+  #log {
+    flex: 1;
+    overflow-y: auto;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    padding: 6px 0;
+  }
+  .ev { padding: 3px 16px; cursor: pointer; border-left: 3px solid transparent; }
+  .ev:hover { background: #f6f7f9; }
+  .ev .head { display: flex; gap: 8px; align-items: baseline; }
+  .ev .t { color: var(--muted); flex: none; }
+  .ev .ic { flex: none; width: 1.2em; text-align: center; }
+  .ev .name { flex: none; font-weight: 600; }
+  .ev .sum { color: var(--ink); overflow-wrap: anywhere; }
+  .ev pre {
+    margin: 4px 0 4px 2px;
+    padding: 8px 10px;
+    background: #f6f7f9;
+    border-radius: 6px;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    font-size: 12px;
+    cursor: text;
+  }
+  .ev.tool_call .name { color: var(--info); }
+  .ev.tool_result .name { color: var(--ok); }
+  .ev.api_attempt .name { color: #5b4b8a; }
+  .ev.kb_search .name { color: #23707a; }
+  .ev.guardrail .name { color: var(--ok); }
+  .ev.handoff { background: #fdf6e7; border-left-color: var(--warn); }
+  .ev.handoff .name { color: var(--warn); }
+  .ev.flag { background: #fdf6e7; border-left-color: var(--warn); }
+  .ev.flag .name { color: var(--warn); }
+  .ev.error, .ev.lvl-error { background: #fbeeea; border-left-color: var(--bad); }
+  .ev.error .name, .ev.lvl-error .name { color: var(--bad); }
+  .ev.lvl-warning { border-left-color: var(--warn); }
+  .empty { color: var(--muted); font-size: 13px; padding: 10px 16px; font-family: var(--sans); }
+
+  @media (max-width: 900px) {
+    main { grid-template-columns: 1fr; grid-auto-rows: minmax(420px, auto); }
+  }
+</style>
+</head>
+<body>
+<header class="accent">
+  <div class="brand">
+    <h1>Roadway Assistant</h1>
+    <span class="session">Session <span id="session-id">…</span></span>
+  </div>
+  <div class="scenarios" id="scenarios"></div>
+  <div class="controls">
+    <button id="pause" class="hidden" type="button">Pause</button>
+    <button id="reset" type="button">Reset</button>
+  </div>
+</header>
+
+<main>
+  <section class="pane">
+    <h2>Customer chat</h2>
+    <div id="chat"></div>
+    <div class="composer">
+      <div id="notice" class="hidden"></div>
+      <div class="compose-row">
+        <textarea id="input" rows="1" placeholder="Type a message. Enter sends, Shift+Enter for a new line."></textarea>
+        <button id="send" class="primary" type="button">Send</button>
+      </div>
+      <div id="cues" class="hidden"></div>
+    </div>
+  </section>
+
+  <section class="pane">
+    <h2>Under the hood</h2>
+    <div class="status">
+      <div class="srow"><span class="k">Identity</span><span class="v" id="st-identity"></span></div>
+      <div class="srow"><span class="k">Quote</span><span class="v" id="st-quote"></span></div>
+      <div class="srow"><span class="k">Handoffs</span><span class="v" id="st-handoffs"></span></div>
+    </div>
+    <div id="log"></div>
+  </section>
+</main>
+
+<script>
+"use strict";
+
+// Same patterns as CVV_RE / ZIP_RE in src/payment.py; the server checks again.
+const CVV_RE = /^\d{3,4}$/;
+const ZIP_RE = /^\d{5}$/;
+const FAST_MS = 500;
+const SLOW_MS = 3000;
+const AUTOPLAY_GAP_MS = 1500;
+
+const $ = (id) => document.getElementById(id);
+const chatEl = $("chat");
+const logEl = $("log");
+const inputEl = $("input");
+const sendEl = $("send");
+const noticeEl = $("notice");
+const cuesEl = $("cues");
+const pauseEl = $("pause");
+
+// ---- small helpers (all server text goes through textContent) ---------------
+
+function el(tag, cls, text) {
+  const node = document.createElement(tag);
+  if (cls) node.className = cls;
+  if (text !== undefined && text !== null) node.textContent = String(text);
+  return node;
+}
+
+function sleep(ms) { return new Promise((r) => setTimeout(r, ms)); }
+
+async function api(method, path, body) {
+  const opts = { method, headers: {} };
+  if (body !== undefined) {
+    opts.headers["Content-Type"] = "application/json";
+    opts.body = JSON.stringify(body);
+  }
+  const resp = await fetch(path, opts);
+  let data = {};
+  try { data = await resp.json(); } catch (_) { data = {}; }
+  return { status: resp.status, data };
+}
+
+function localTime(iso, withSeconds = true) {
+  if (!iso) return "";
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return String(iso);
+  const opts = { hour: "2-digit", minute: "2-digit", hour12: false };
+  if (withSeconds) opts.second = "2-digit";
+  return d.toLocaleTimeString([], opts);
+}
+
+function nearBottom(node) {
+  return node.scrollHeight - node.scrollTop - node.clientHeight < 60;
+}
+
+function compact(value) {
+  if (value === null || value === undefined) return String(value);
+  if (typeof value === "string") return value;
+  try { return JSON.stringify(value); } catch (_) { return String(value); }
+}
+
+let noticeTimer = null;
+function showNotice(text, soft = false, ms = 0) {
+  clearTimeout(noticeTimer);
+  noticeEl.textContent = text;
+  noticeEl.className = soft ? "soft" : "";
+  if (ms) noticeTimer = setTimeout(hideNotice, ms);
+}
+function hideNotice() {
+  clearTimeout(noticeTimer);
+  noticeEl.textContent = "";
+  noticeEl.className = "hidden";
+}
+
+// ---- session state ---------------------------------------------------------
+
+let gen = 0;               // bumps on every local reset; stale responses are dropped
+let since = 0;
+let sessionId = null;
+let latest = { busy: false, payment: null };
+let chatNodes = [];        // one entry per rendered chat item
+let thinkingEl = null;
+let sending = false;
+let activeCard = null;     // the interactive payment card (autoplay drives it)
+
+function resetLocal() {
+  gen += 1;
+  since = 0;
+  sessionId = null;
+  latest = { busy: false, payment: null };
+  chatNodes = [];
+  thinkingEl = null;
+  activeCard = null;
+  chatEl.replaceChildren();
+  logEl.replaceChildren(el("div", "empty", "No events yet."));
+  hideNotice();
+  renderStatus(null);
+  updateComposer();
+}
+
+function updateComposer() {
+  sendEl.disabled = sending || latest.busy;
+}
+
+// ---- polling ---------------------------------------------------------------
+
+let pollTimer = null;
+let polling = false;
+let pollAgain = false;
+let pollsHeld = false;     // set while a reset or scenario POST is in flight
+
+function holdPolls() {
+  pollsHeld = true;
+  clearTimeout(pollTimer);
+}
+
+function releasePolls() {
+  pollsHeld = false;
+  poll();
+}
+
+function schedulePoll(ms) {
+  clearTimeout(pollTimer);
+  pollTimer = setTimeout(poll, ms);
+}
+
+async function poll() {
+  clearTimeout(pollTimer);
+  if (pollsHeld) return;   // releasePolls() polls again
+  if (polling) { pollAgain = true; return; }
+  polling = true;
+  const myGen = gen;
+  let next = SLOW_MS;
+  try {
+    const { status, data } = await api("GET", "/api/state?since=" + since);
+    if (myGen !== gen) {
+      next = 0;            // a reset happened mid-request: fetch again from 0
+    } else if (status === 200) {
+      if (sessionId !== null && data.session_id !== sessionId) {
+        resetLocal();      // the session changed under us (e.g. another tab)
+        next = 0;
+      } else {
+        applyState(data);
+        next = data.busy || data.payment ? FAST_MS : SLOW_MS;
+      }
+    }
+  } catch (_) {
+    next = SLOW_MS;
+  } finally {
+    polling = false;
+  }
+  if (pollAgain) { pollAgain = false; next = 0; }
+  schedulePoll(next);
+}
+
+function applyState(s) {
+  sessionId = s.session_id;
+  $("session-id").textContent = s.session_id;
+  latest = { busy: !!s.busy, payment: s.payment || null };
+  renderChat(s.chat || [], latest.busy && !latest.payment);
+  renderStatus(s.status);
+  appendTrace(s.trace || []);
+  since = s.trace_next;
+  updateComposer();
+}
+
+// ---- chat ------------------------------------------------------------------
+
+function renderChat(items, thinking) {
+  const stick = nearBottom(chatEl);
+  let changed = false;
+  if (thinkingEl) { thinkingEl.remove(); thinkingEl = null; }
+  items.forEach((item, i) => {
+    const known = chatNodes[i];
+    if (!known) {
+      const node = item.role === "payment" ? payCard(item, i) : bubble(item);
+      chatNodes[i] = { node, status: item.status };
+      chatEl.appendChild(node);
+      changed = true;
+    } else if (item.role === "payment" && known.status !== item.status) {
+      const node = payCard(item, i);
+      known.node.replaceWith(node);
+      chatNodes[i] = { node, status: item.status };
+      changed = true;
+    }
+  });
+  if (thinking) {
+    thinkingEl = el("div", "thinking");
+    thinkingEl.append(el("span", "", "●"), el("span", "", "●"), el("span", "", "●"));
+    thinkingEl.append(document.createTextNode(" thinking"));
+    chatEl.appendChild(thinkingEl);
+  }
+  if (stick || changed) chatEl.scrollTop = chatEl.scrollHeight;
+}
+
+function bubble(item) {
+  return el("div", "bubble " + (item.role === "user" ? "user" : "agent"), item.text);
+}
+
+const DONE_TEXT = {
+  submitted: "Payment details sent",
+  cancelled: "Payment cancelled",
+  expired: "Payment request expired",
+};
+
+function payCard(item, index) {
+  if (item.status !== "pending") {
+    if (activeCard && activeCard.index === index) activeCard = null;
+    return el("div", "paycard done", "🔒 " + (DONE_TEXT[item.status] || "Payment " + item.status));
+  }
+  const card = el("div", "paycard");
+  const title = el("div", "title");
+  title.append(el("span", "", "🔒"), el("span", "", "Secure payment"));
+  card.append(title, el("div", "sub", "Handled by code, never shown to the AI"));
+
+  const amount = Number(item.amount);
+  const money = (item.currency || "") + " " + (isFinite(amount) ? amount.toFixed(2) : String(item.amount));
+  const target = item.card_type && item.last_four
+    ? "your " + item.card_type + " ending " + item.last_four
+    : "the card on file";
+  card.append(el("div", "what", "Authorize " + money + " to " + target));
+
+  const fields = el("div", "fields");
+  const cvvLabel = el("label", "", "CVV");
+  const cvv = document.createElement("input");
+  cvv.type = "password";
+  cvv.inputMode = "numeric";
+  cvv.autocomplete = "off";
+  cvv.maxLength = 4;
+  cvvLabel.appendChild(cvv);
+  const zipLabel = el("label", "", "Billing ZIP");
+  const zip = document.createElement("input");
+  zip.type = "text";
+  zip.inputMode = "numeric";
+  zip.autocomplete = "off";
+  zip.maxLength = 5;
+  zipLabel.appendChild(zip);
+  fields.append(cvvLabel, zipLabel);
+
+  const actions = el("div", "actions");
+  const cancel = el("button", "", "Cancel");
+  cancel.type = "button";
+  const authorize = el("button", "primary", "Authorize");
+  authorize.type = "button";
+  authorize.disabled = true;
+  actions.append(cancel, authorize);
+  const note = el("div", "note hidden");
+  card.append(fields, actions, note);
+
+  let answered = false;
+  const valid = () => CVV_RE.test(cvv.value) && ZIP_RE.test(zip.value);
+  const validate = () => { authorize.disabled = answered || !valid(); };
+  cvv.addEventListener("input", validate);
+  zip.addEventListener("input", validate);
+  const onEnter = (e) => { if (e.key === "Enter" && !authorize.disabled) authorize.click(); };
+  cvv.addEventListener("keydown", onEnter);
+  zip.addEventListener("keydown", onEnter);
+
+  const submit = async (body) => {
+    if (answered) return;
+    answered = true;
+    authorize.disabled = true;
+    cancel.disabled = true;
+    cvv.disabled = true;
+    zip.disabled = true;
+    const myGen = gen;
+    let res = null;
+    try { res = await api("POST", "/api/payment", body); } catch (_) { res = null; }
+    cvv.value = "";
+    zip.value = "";
+    if (myGen !== gen) return;
+    if (!res || res.status !== 200) {
+      note.textContent = res && res.status === 409
+        ? "No payment is waiting any more."
+        : "Could not reach the server.";
+      note.className = "note";
+    }
+    poll();
+  };
+  authorize.addEventListener("click", () => {
+    if (valid()) submit({ cvv: cvv.value, billing_zip: zip.value });
+  });
+  cancel.addEventListener("click", () => submit({ cancel: true }));
+
+  activeCard = { index, cvv, zip, authorize, cancel, handled: false };
+  return card;
+}
+
+// ---- status panel ----------------------------------------------------------
+
+function pill(text, kind) { return el("span", "pill " + kind, text); }
+
+function renderStatus(status) {
+  const idEl = $("st-identity");
+  const qEl = $("st-quote");
+  const hEl = $("st-handoffs");
+  idEl.replaceChildren();
+  qEl.replaceChildren();
+  hEl.replaceChildren();
+  if (!status) {
+    idEl.append(pill("unverified", "none"));
+    qEl.textContent = "none";
+    hEl.textContent = "none";
+    return;
+  }
+  const ident = status.identity || {};
+  const v = String(ident.verification || "unverified");
+  const vKind = v === "verified" ? "good" : v === "unverified" ? "none" : "mid";
+  idEl.append(pill(v.replace(/_/g, " "), vKind));
+  const bits = [ident.reservation_id, ident.email].filter(Boolean);
+  if (bits.length) idEl.append(document.createTextNode(bits.join(" · ")));
+
+  const q = status.quote;
+  if (q) {
+    const qs = String(q.status);
+    const qKind = qs === "committed" ? "good" : qs === "presented" || qs === "in_flight" ? "mid" : "none";
+    qEl.append(pill(qs.replace(/_/g, " "), qKind));
+    const total = q.total === null || q.total === undefined ? "?" : q.total;
+    let text = total + " " + (q.currency || "");
+    if (q.expires_at) text += " · expires " + localTime(q.expires_at, false);
+    qEl.append(document.createTextNode(text));
+  } else {
+    qEl.textContent = "none";
+  }
+
+  const hs = status.handoffs || [];
+  if (hs.length) {
+    hs.forEach((h, i) => {
+      if (i) hEl.append(document.createElement("br"));
+      hEl.append(pill("handoff", "mid"), document.createTextNode(h.reason + " · " + h.reference));
+    });
+  } else {
+    hEl.textContent = "none";
+  }
+}
+
+// ---- trace log -------------------------------------------------------------
+
+const SKIP = new Set(["turn_user", "turn_agent"]);
+const BASE_KEYS = new Set(["ts", "session_id", "event", "level"]);
+const ICONS = {
+  tool_call: "→",
+  tool_result: "←",
+  guardrail: "⛨",
+  api_attempt: "⇄",
+  kb_search: "🔎",
+  handoff: "👤",
+  error: "⚠",
+};
+
+function otherFields(ev, skip = []) {
+  const parts = [];
+  for (const [k, v] of Object.entries(ev)) {
+    if (BASE_KEYS.has(k) || skip.includes(k)) continue;
+    parts.push(k + "=" + compact(v));
+  }
+  return parts.join(" ");
+}
+
+function describe(ev) {
+  switch (ev.event) {
+    case "tool_call":
+      return ev.tool + "(" + (ev.args && Object.keys(ev.args).length ? compact(ev.args) : "") + ")";
+    case "tool_result":
+      if (ev.result && typeof ev.result === "object") {
+        return ev.tool + " → " + (ev.result.outcome || compact(ev.result));
+      }
+      return ev.tool + " · " + otherFields(ev, ["tool"]);
+    case "guardrail":
+      return ev.check + ": " + ev.verdict + (ev.reason ? " · " + ev.reason : "");
+    case "api_attempt": {
+      const outcome = ev.status === null || ev.status === undefined
+        ? (ev.error_code || "no response")
+        : ev.status + (ev.error_code ? " " + ev.error_code : "");
+      return ev.method + " " + ev.path + " → " + outcome + " · attempt " + ev.attempt
+        + (ev.latency_ms !== undefined ? " · " + ev.latency_ms + " ms" : "");
+    }
+    case "kb_search": {
+      const ids = (ev.results || []).map((r) => r.id).join(", ") || "no results";
+      return ids + (ev.fallback ? " · keyword fallback" : "");
+    }
+    case "handoff":
+      return ev.reason + " · " + ev.reference;
+    case "error":
+      return (ev.tool ? ev.tool + ": " : "") + (ev.message || otherFields(ev));
+    default:
+      return otherFields(ev);
+  }
+}
+
+function appendTrace(events) {
+  const shown = events.filter((ev) => !SKIP.has(ev.event));
+  if (!shown.length) return;
+  const stick = nearBottom(logEl);
+  const empty = logEl.querySelector(".empty");
+  if (empty) empty.remove();
+  for (const ev of shown) {
+    const row = el("div", "ev " + String(ev.event).replace(/[^\w-]/g, ""));
+    if (ev.level === "error" || ev.level === "warning") row.classList.add("lvl-" + ev.level);
+    if (ev.event === "guardrail" && ev.verdict !== "allow") row.classList.add("flag");
+    const head = el("div", "head");
+    head.append(
+      el("span", "t", localTime(ev.ts)),
+      el("span", "ic", ICONS[ev.event] || "·"),
+      el("span", "name", ev.event),
+      el("span", "sum", describe(ev)),
+    );
+    row.appendChild(head);
+    row.addEventListener("click", (e) => {
+      if (e.target.tagName === "PRE") return;   // let the JSON be selected
+      const open = row.querySelector("pre");
+      if (open) { open.remove(); return; }
+      row.appendChild(el("pre", "", JSON.stringify(ev, null, 2)));
+    });
+    logEl.appendChild(row);
+  }
+  if (stick) logEl.scrollTop = logEl.scrollHeight;
+}
+
+// ---- sending ---------------------------------------------------------------
+
+async function send(text) {
+  text = (text || "").trim();
+  if (!text || sending) return false;
+  sending = true;
+  updateComposer();
+  const myGen = gen;
+  let ok = false;
+  try {
+    const { status, data } = await api("POST", "/api/message", { text });
+    if (myGen === gen) {
+      if (status === 202) {
+        ok = true;
+        inputEl.value = "";
+        latest.busy = true;
+        hideNotice();
+      } else if (status === 409) {
+        showNotice("Still answering…", true, 2500);
+      } else {
+        showNotice(data.error || "Could not send the message.");
+      }
+    }
+  } catch (_) {
+    showNotice("Could not reach the server.");
+  } finally {
+    sending = false;
+    updateComposer();
+  }
+  poll();
+  return ok;
+}
+
+sendEl.addEventListener("click", () => send(inputEl.value));
+inputEl.addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && !e.shiftKey && !e.isComposing) {
+    e.preventDefault();
+    if (!sendEl.disabled) send(inputEl.value);
+  }
+});
+inputEl.addEventListener("input", (e) => {
+  if (e.isTrusted) stopAutoplay();   // the presenter took over
+});
+
+// ---- scenarios -------------------------------------------------------------
+
+function showCues(lines) {
+  cuesEl.replaceChildren();
+  if (!lines || !lines.length) { cuesEl.className = "hidden"; return; }
+  cuesEl.className = "";
+  cuesEl.appendChild(el("div", "cue-title", "Script"));
+  lines.forEach((line, i) => {
+    const b = el("button", "", (i + 1) + ". " + line);
+    b.type = "button";
+    b.title = line;
+    b.addEventListener("click", () => {
+      stopAutoplay();
+      inputEl.value = line;
+      inputEl.focus();
+    });
+    cuesEl.appendChild(b);
+  });
+}
+
+function clearAll() {
+  stopAutoplay();
+  holdPolls();
+  resetLocal();
+  showCues(null);
+  inputEl.value = "";
+}
+
+async function startScenario(key) {
+  clearAll();
+  const myGen = gen;
+  let res;
+  try {
+    res = await api("POST", "/api/scenarios/" + encodeURIComponent(key));
+  } catch (_) {
+    showNotice("Could not reach the server.");
+    releasePolls();
+    return null;
+  }
+  if (myGen !== gen) return null;   // a newer reset or scenario owns the hold
+  releasePolls();
+  if (res.status !== 200) {
+    showNotice(res.data.error || "Could not start the scenario.");
+    return null;
+  }
+  const lines = res.data.lines || [];
+  inputEl.value = lines[0] || "";
+  showCues(lines);
+  return res.data;
+}
+
+async function loadScenarios() {
+  const box = $("scenarios");
+  try {
+    const { data } = await api("GET", "/api/scenarios");
+    for (const sc of data.scenarios || []) {
+      const wrap = el("span", "scenario");
+      const live = el("button", "", sc.label);
+      live.type = "button";
+      live.title = "Load the script; you send each line";
+      live.addEventListener("click", () => startScenario(sc.key));
+      const play = el("button", "play", "▶");
+      play.type = "button";
+      play.title = "Autoplay: " + sc.label;
+      play.addEventListener("click", () => autoplay(sc.key));
+      wrap.append(live, play);
+      box.appendChild(wrap);
+    }
+  } catch (_) {
+    box.appendChild(el("span", "session", "Scenarios unavailable"));
+  }
+}
+
+$("reset").addEventListener("click", async () => {
+  clearAll();
+  const myGen = gen;
+  try { await api("POST", "/api/reset"); } catch (_) { showNotice("Could not reach the server."); }
+  if (myGen === gen) releasePolls();
+});
+
+// ---- autoplay --------------------------------------------------------------
+
+let ap = null;             // the running autoplay: { paused }
+
+class Stopped extends Error {}
+
+function stopAutoplay() {
+  if (!ap) return;
+  ap = null;
+  pauseEl.className = "hidden";
+}
+
+pauseEl.addEventListener("click", () => {
+  if (!ap) return;
+  ap.paused = !ap.paused;
+  pauseEl.textContent = ap.paused ? "Resume" : "Pause";
+});
+
+async function step(run, ms) {
+  // Wait `ms` of unpaused time; throw Stopped once this run is no longer current.
+  let left = ms;
+  for (;;) {
+    if (ap !== run) throw new Stopped();
+    if (left <= 0) return;
+    await sleep(Math.min(left, 100));
+    if (!run.paused) left -= 100;
+  }
+}
+
+async function typeInto(run, input, text) {
+  input.focus();
+  input.value = "";
+  for (const ch of text) {
+    await step(run, 160);
+    input.value += ch;
+    input.dispatchEvent(new Event("input"));
+  }
+}
+
+async function handleCard(run, payments) {
+  const card = activeCard;
+  if (!card || card.handled) return;
+  card.handled = true;
+  await step(run, 800);
+  const p = payments.length ? payments.shift() : null;
+  if (!p) {
+    await step(run, 1000);
+    card.cancel.click();
+    return;
+  }
+  await typeInto(run, card.cvv, p.cvv);
+  await step(run, 300);
+  await typeInto(run, card.zip, p.billing_zip);
+  await step(run, 1000);
+  (card.authorize.disabled ? card.cancel : card.authorize).click();
+}
+
+async function waitIdle(run, payments) {
+  // Wait until the turn is over, answering any payment card on the way.
+  for (;;) {
+    await step(run, 100);
+    if (latest.payment) await handleCard(run, payments);
+    else if (!latest.busy && !sending) return;
+  }
+}
+
+async function autoplay(key) {
+  const data = await startScenario(key);
+  if (!data) return;
+  const run = { paused: false };
+  ap = run;
+  pauseEl.textContent = "Pause";
+  pauseEl.className = "";
+  const payments = (data.payments || []).slice();
+  try {
+    for (const line of data.lines || []) {
+      await waitIdle(run, payments);
+      inputEl.value = line;
+      await step(run, AUTOPLAY_GAP_MS);
+      if (!(await send(line))) {
+        // Busy or failed: wait for the turn and try this line once more.
+        await waitIdle(run, payments);
+        await step(run, AUTOPLAY_GAP_MS);
+        await send(line);
+      }
+    }
+    await waitIdle(run, payments);
+  } catch (err) {
+    if (err instanceof Stopped) return;
+    throw err;
+  }
+  stopAutoplay();
+}
+
+// ---- start -----------------------------------------------------------------
+
+resetLocal();
+loadScenarios();
+poll();
+</script>
+</body>
+</html>

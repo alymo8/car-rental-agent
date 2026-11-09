@@ -1,0 +1,242 @@
+[
+  {
+    "id": "kb_ext_01",
+    "title": "Extending Your Rental",
+    "category": "extensions",
+    "body": "You can extend an active Roadway rental as long as the vehicle is available for the additional dates. Extensions are charged at the daily rate that applies to your vehicle class for the added days, plus applicable taxes and fees. To request an extension, provide your reservation number and the new return date and time. If you return the vehicle after your scheduled return time, a grace period of 30 minutes applies before any late charges are assessed. Extensions are not guaranteed: if the vehicle is reserved for another customer during your requested dates, we may offer an alternative class or location, or ask you to return the vehicle as scheduled. Roadway Preferred members receive priority when availability is limited.",
+    "last_updated": "2026-04-10",
+    "authority": "official-policy"
+  },
+  {
+    "id": "kb_ext_02",
+    "title": "How Extension Charges Are Calculated",
+    "category": "extensions",
+    "body": "When you extend a rental, you are charged the daily rate for your vehicle class for each additional day, rounded up to the next full day. The subtotal is the daily rate multiplied by the number of added days. Taxes and fees are then applied to the subtotal. If you are a standard member and the vehicle is returned after the scheduled return time, a late return fee may also apply. Roadway Preferred members are exempt from late return fees. Your card on file is charged automatically once the extension is confirmed; you will receive a confirmation number for your records. Estimates provided before confirmation are not final until the charge is processed.",
+    "last_updated": "2025-12-01",
+    "authority": "help-center"
+  },
+  {
+    "id": "kb_ext_03",
+    "title": "Short Extensions and Adding a Single Day",
+    "category": "extensions",
+    "body": "Many customers only need a little more time. You can add a single day or even part of a day to most rentals. Partial days are billed as a full additional day at your vehicle class rate. If you only need a few extra hours past your return time, those hours are still treated as a full day for billing purposes once the grace period has passed. We recommend confirming the new return time precisely, since charges are calculated from the scheduled return time, not the time you call. If you are unsure how long you need, you can request a price quote before committing to the change.",
+    "last_updated": "2026-02-15",
+    "authority": "help-center"
+  },
+  {
+    "id": "kb_ext_04",
+    "title": "Extensions and Vehicle Availability",
+    "category": "extensions",
+    "body": "An extension depends on whether your vehicle is needed for an upcoming reservation. If the vehicle is committed to another customer, Roadway may be unable to extend your current rental for the full period you requested. In these cases we will try to offer a comparable vehicle class or a nearby location, but availability is not guaranteed. To protect both customers, requests that would create a scheduling conflict are reviewed before they are confirmed, and some are routed to a representative. Returning the vehicle on time helps Roadway keep downstream reservations on schedule and avoids disruption for the next customer.",
+    "last_updated": "2026-03-20",
+    "authority": "official-policy"
+  },
+  {
+    "id": "kb_fee_01",
+    "title": "Late Returns and Grace Periods",
+    "category": "fees",
+    "body": "Roadway understands that plans change and travel can run long. As a courtesy, returns made within a grace period of 2 hours after the scheduled return time are not subject to a late return fee. After the grace period, a late return fee applies to standard members for each day or partial day the vehicle is kept beyond the scheduled time. Roadway Preferred members are not charged late return fees. If you know you will be late, contacting Roadway to extend the rental is usually less expensive than returning late, because an extension is billed at your standard daily rate rather than as a late return.",
+    "last_updated": "2024-09-12",
+    "authority": "legacy"
+  },
+  {
+    "id": "kb_fee_02",
+    "title": "Late Return Fee",
+    "category": "fees",
+    "body": "A late return fee of $29.00 is charged to standard members when a vehicle is returned after the scheduled return time and beyond the applicable grace period. The fee is assessed in addition to any daily charges that accrue for the extra time. Roadway Preferred members are exempt from late return fees as a benefit of membership. The simplest way to avoid a late return fee is to extend your rental before your scheduled return time, which converts the additional time into a standard daily charge. Late return fees are separate from after-hours return fees, which apply when a vehicle is returned outside a location's operating hours.",
+    "last_updated": "2026-01-05",
+    "authority": "official-policy"
+  },
+  {
+    "id": "kb_fee_03",
+    "title": "One-Way and Location Change Fees",
+    "category": "fees",
+    "body": "If you return your vehicle to a different location than your original return location, a one-way fee of $75.00 applies. This fee covers the cost of repositioning the vehicle and is added to your total at the time the change is confirmed. One-way changes are also subject to vehicle availability at the new location: if your vehicle class is not available there, the change cannot be completed and you may be offered an alternative class or a nearby location. The one-way fee is charged once per reservation change, not per day. Taxes apply to the combined total of any added charges.",
+    "last_updated": "2026-02-10",
+    "authority": "official-policy"
+  },
+  {
+    "id": "kb_fee_04",
+    "title": "Taxes and Surcharges",
+    "category": "fees",
+    "body": "Rental charges are subject to taxes and surcharges that vary by location. For estimation purposes, a combined tax and fee rate of approximately 9.25% is applied to the subtotal of any charge, including extensions and modifications. Taxes are calculated on the sum of daily charges and any applicable fees, such as one-way fees. Surcharges such as airport concession recovery fees may be included in the displayed rate at certain locations. The exact tax shown at confirmation is authoritative; pre-confirmation quotes are estimates and may differ slightly from the final amount charged.",
+    "last_updated": "2025-11-20",
+    "authority": "help-center"
+  },
+  {
+    "id": "kb_mod_01",
+    "title": "Changing Your Pickup or Return Time",
+    "category": "modifications",
+    "body": "You can change the pickup or return time on an active reservation, subject to availability. Moving your return time later is treated as an extension and is billed at your daily rate for any additional days. Moving your return time earlier may reduce your charges, though some prepaid rates are non-refundable. Time changes do not incur a separate change fee, but they may change the number of billed days. When you request a time change, confirm the exact new date and time, since charges are calculated from the scheduled times on file. A price quote is available before you confirm any change.",
+    "last_updated": "2026-03-01",
+    "authority": "official-policy"
+  },
+  {
+    "id": "kb_mod_02",
+    "title": "Changing Your Return Location",
+    "category": "modifications",
+    "body": "Returning a vehicle to a different location than originally booked is permitted on most reservations but is subject to a one-way fee and to vehicle availability at the new location. When you request a location change, Roadway checks whether your vehicle class is available at the destination. If it is not, the change cannot be completed as requested, and you may be offered a different vehicle class or a nearby location. Location changes affect inventory planning at both sites, so some requests are reviewed before confirmation. The one-way fee is disclosed before the change is finalized.",
+    "last_updated": "2026-02-10",
+    "authority": "official-policy"
+  },
+  {
+    "id": "kb_mod_03",
+    "title": "Changing Your Vehicle Class",
+    "category": "modifications",
+    "body": "If you would like a different type of vehicle than the one on your reservation, you can request a vehicle class change subject to availability. Moving to a higher class increases your daily rate; moving to a lower class decreases it. Vehicle class changes are not the same as a membership upgrade. Availability is specific to each location and date range, so a class may be available at one location but not another. If your preferred class is unavailable, we will show you the classes that are available, along with their daily rates, so you can choose an alternative.",
+    "last_updated": "2026-01-15",
+    "authority": "help-center"
+  },
+  {
+    "id": "kb_mod_04",
+    "title": "When a Requested Vehicle Isn't Available",
+    "category": "modifications",
+    "body": "Availability changes constantly as vehicles are rented and returned. When the exact vehicle class you want is not available for your dates, Roadway will surface alternatives: other classes available at the same location, and availability at nearby locations within driving distance. Each option includes its daily rate so you can compare. If no suitable option is available, the safest outcome is to keep your current reservation as is or speak with a representative who can review additional inventory. We do not confirm changes that would leave another customer without a reserved vehicle.",
+    "last_updated": "2026-02-28",
+    "authority": "help-center"
+  },
+  {
+    "id": "kb_can_01",
+    "title": "Cancelling a Reservation",
+    "category": "cancellations",
+    "body": "Reservations can be cancelled before the rental begins. Cancellations made more than 48 hours before the scheduled pickup time are eligible for a full refund of any prepaid amount. Cancellations made within 48 hours of pickup may be subject to a cancellation penalty equal to one day's rate. Prepaid, non-refundable rates are an exception and may not be eligible for a refund regardless of timing. To cancel, provide your reservation number. You will receive a cancellation confirmation number and a summary of any penalty and refund. Refunds are issued to the original form of payment.",
+    "last_updated": "2026-03-12",
+    "authority": "official-policy"
+  },
+  {
+    "id": "kb_can_02",
+    "title": "Refund Timing After a Cancellation",
+    "category": "cancellations",
+    "body": "Once a cancellation is processed, any eligible refund is issued to the card used for the reservation. Refunds typically appear within 5 to 10 business days, depending on your bank. The refund amount equals the prepaid amount minus any applicable cancellation penalty. If your reservation was booked on a pay-at-counter rate with no prepayment, there is usually nothing to refund, and cancelling simply releases the reservation. You will always receive a cancellation confirmation number summarizing the penalty, if any, and the refund amount.",
+    "last_updated": "2025-12-10",
+    "authority": "help-center"
+  },
+  {
+    "id": "kb_can_03",
+    "title": "No-Show Policy",
+    "category": "cancellations",
+    "body": "A no-show occurs when a reservation is neither used nor cancelled by the scheduled pickup time. For prepaid reservations, a no-show may forfeit some or all of the prepaid amount. For pay-at-counter reservations, a no-show fee may apply at some locations. Cancelling in advance, even shortly before pickup, is always preferable to a no-show because it reduces or avoids penalties and frees the vehicle for another customer. If you realize you cannot make your pickup, cancel as early as possible.",
+    "last_updated": "2026-01-22",
+    "authority": "official-policy"
+  },
+  {
+    "id": "kb_can_04",
+    "title": "Ending a Rental Early",
+    "category": "cancellations",
+    "body": "If you return a vehicle before your scheduled return date, your charges are based on the time the vehicle was actually rented, though some discounted multi-day or prepaid rates assume the full rental period and may not be reduced. Early returns are not the same as cancellations, which apply before a rental begins. There is no fee to return early, but you may not receive a refund for unused days on certain rate plans. If you are unsure whether your rate qualifies for a partial refund, request a quote or speak with a representative before returning.",
+    "last_updated": "2026-02-05",
+    "authority": "help-center"
+  },
+  {
+    "id": "kb_upg_01",
+    "title": "Upgrading to Roadway Preferred",
+    "category": "upgrades",
+    "body": "Roadway Preferred is our membership tier for frequent renters. Standard members who meet the eligibility requirements can upgrade to Preferred to receive benefits such as late-return fee waivers, priority vehicle availability, and expedited counter service. Eligibility is based primarily on rental history. If you meet the requirements, the upgrade can be applied to your account and takes effect immediately. If you do not yet qualify, your rental activity continues to count toward eligibility. Upgrading membership is different from upgrading the vehicle class on a specific reservation.",
+    "last_updated": "2026-03-05",
+    "authority": "official-policy"
+  },
+  {
+    "id": "kb_upg_02",
+    "title": "Vehicle Upgrades on a Reservation",
+    "category": "upgrades",
+    "body": "A vehicle upgrade moves your reservation to a higher vehicle class, such as from a midsize sedan to an SUV or a luxury vehicle. Upgrades are subject to availability at your location and dates, and they increase your daily rate. This is separate from upgrading your membership to Roadway Preferred. If you would like a nicer vehicle for your trip, ask for the available classes and their rates so you can choose. Complimentary upgrades are occasionally offered at the counter based on fleet availability but cannot be guaranteed in advance.",
+    "last_updated": "2026-01-30",
+    "authority": "help-center"
+  },
+  {
+    "id": "kb_upg_03",
+    "title": "Roadway Preferred Benefits",
+    "category": "upgrades",
+    "body": "Roadway Preferred members enjoy several benefits designed to make renting faster and more flexible. These include waivers of late return fees, priority access to vehicles when availability is limited, and a faster counter and return experience. Preferred members are also given preference when an extension is requested and inventory is tight. Benefits apply automatically once your account is Preferred; there is nothing extra to redeem. Membership benefits are distinct from any rate discounts associated with a specific promotion or corporate account.",
+    "last_updated": "2026-02-18",
+    "authority": "official-policy"
+  },
+  {
+    "id": "kb_elig_01",
+    "title": "Who Can Extend or Modify a Rental",
+    "category": "eligibility",
+    "body": "The primary renter on a reservation can request an extension or modification. Changes require an active reservation in good standing and a valid payment method on file. Reservations that are flagged for review, overdue beyond policy, or associated with a declined payment may not be eligible for self-service changes and may require a representative. Additional authorized drivers listed on the rental can typically pick up and return the vehicle but may not be able to make billing changes. Always have your reservation number ready when requesting a change.",
+    "last_updated": "2026-01-12",
+    "authority": "help-center"
+  },
+  {
+    "id": "kb_elig_02",
+    "title": "Roadway Preferred Eligibility Requirements",
+    "category": "eligibility",
+    "body": "Eligibility for Roadway Preferred is based primarily on rental history with Roadway. Members who have completed a sufficient number of qualifying rentals are eligible to upgrade. Customers with very limited rental history typically do not yet qualify and should continue renting to build eligibility. Eligibility may also consider account standing, such as a history of on-time returns and a valid payment method. Meeting the rental-history threshold does not happen automatically for the vehicle class on a reservation; it applies to membership status only.",
+    "last_updated": "2026-03-08",
+    "authority": "official-policy"
+  },
+  {
+    "id": "kb_elig_03",
+    "title": "Payment and Card Requirements",
+    "category": "eligibility",
+    "body": "Changes that result in a charge, such as extensions and modifications, require a valid payment method. When using the card on file, you will be asked to confirm the card's security code (CVV) and the billing ZIP code associated with the card. Both are required to authorize the charge. If either is missing or does not match, the charge cannot be processed and the change will not be completed. You may also provide a different card. Keeping a current, valid card on file helps changes go through without interruption.",
+    "last_updated": "2026-02-22",
+    "authority": "official-policy"
+  },
+  {
+    "id": "kb_pref_01",
+    "title": "Roadway Preferred Program Overview",
+    "category": "preferred-program",
+    "body": "Roadway Preferred is designed for travelers who rent often and value speed and flexibility. The program streamlines pickup and return and provides members with benefits that reduce common friction points, such as late-return fees and limited availability. Membership status is tied to your account and applies across locations. Preferred is a membership tier, not a rate plan, so it works alongside any promotional or corporate rates you may already use. Members can view their status and benefits on their account.",
+    "last_updated": "2026-02-01",
+    "authority": "official-policy"
+  },
+  {
+    "id": "kb_pref_02",
+    "title": "Preferred Member Late-Fee Waiver",
+    "category": "preferred-program",
+    "body": "As a benefit of membership, Roadway Preferred members are not charged late return fees. If a Preferred member returns a vehicle after the scheduled return time, daily charges may still accrue for the additional time, but the separate late return fee that applies to standard members is waived. This waiver is automatic and requires no action. The waiver applies to the late return fee specifically; it does not waive one-way fees, after-hours return fees, or applicable taxes. Extending the rental in advance remains the most economical option for additional time.",
+    "last_updated": "2026-01-18",
+    "authority": "official-policy"
+  },
+  {
+    "id": "kb_pref_03",
+    "title": "Earning and Keeping Preferred Status",
+    "category": "preferred-program",
+    "body": "Preferred status is earned through qualifying rental activity and maintained by continued renting. Each completed rental counts toward your status. Members who do not rent for an extended period may eventually return to standard status, though qualifying activity restores Preferred. There is no fee to maintain status once earned. If you are close to qualifying, completing another rental or two is usually enough. Status applies to your membership and is independent of the vehicle class on any individual reservation.",
+    "last_updated": "2025-10-30",
+    "authority": "help-center"
+  },
+  {
+    "id": "kb_sup_01",
+    "title": "When We Connect You to a Representative",
+    "category": "eligibility",
+    "body": "Most rental changes can be handled directly, but some situations are better handled by a person. These include requests that involve a potential scheduling conflict for the vehicle, unusually high-value or complex reservations, payment issues, and any change where the right outcome is unclear or could negatively affect the customer or another renter. Connecting you to a representative in these cases is intended to protect you and ensure the change is handled correctly. Having your reservation number and details ready helps the representative assist you quickly.",
+    "last_updated": "2026-02-12",
+    "authority": "help-center"
+  },
+  {
+    "id": "kb_sup_02",
+    "title": "Returns Outside Business Hours",
+    "category": "fees",
+    "body": "Some locations have specific operating hours for vehicle returns. If you return a vehicle when the location is closed, an after-hours return fee of $15.00 may apply, and the return may not be processed until the location reopens. After-hours return fees are separate from late return fees. If your return time falls outside a location's hours, consider adjusting your return time or location, or confirm the location's hours in advance. Preferred members should note that the after-hours fee is not waived by the late-fee benefit.",
+    "last_updated": "2025-12-18",
+    "authority": "help-center"
+  },
+  {
+    "id": "kb_ext_05",
+    "title": "Returning Late vs. Extending Your Rental",
+    "category": "extensions",
+    "body": "If you need your vehicle longer, extending the rental in advance is almost always cheaper than simply returning it late. An extension is billed at your standard daily rate for the additional days. A late return, by contrast, can incur a late return fee on top of daily charges once the scheduled return time has passed and the applicable grace period has elapsed. We do provide a short grace period after the scheduled return time before late charges begin; for the current grace period and the exact extension rates, see the extension policy, which is the authoritative source. The practical takeaway: if you already know you'll be late, request an extension before your return time rather than relying on the grace period.",
+    "last_updated": "2026-05-02",
+    "authority": "official-policy"
+  },
+  {
+    "id": "kb_pref_04",
+    "title": "Timing Flexibility for Preferred Members",
+    "category": "preferred-program",
+    "body": "Roadway Preferred members are not charged late return fees (see the membership benefits). In practice this means a Preferred member who returns a little after the scheduled time typically sees no late charge at all, independent of the standard grace period that applies to other members. This is a membership benefit, not a different or longer grace period — the underlying return-time policy is the same for everyone, and daily charges can still accrue for additional time. Members sometimes describe this as 'getting extra time,' but technically it is the fee waiver, not an extended grace window.",
+    "last_updated": "2026-02-26",
+    "authority": "help-center"
+  },
+  {
+    "id": "kb_fee_05",
+    "title": "Fuel and Refueling Charges",
+    "category": "fees",
+    "body": "Vehicles are provided with a full tank and should be returned full. If a vehicle is returned with less fuel than at pickup, a refueling charge applies: the cost of the fuel needed to refill the tank plus a per-gallon refueling service charge. Alternatively, some locations offer a prepaid fuel option at pickup, which lets you return the vehicle at any fuel level without a refueling service charge, though unused prepaid fuel is generally not refunded. Keep your final fuel receipt if you refill near the return location, in case a charge needs to be reviewed.",
+    "last_updated": "2024-06-30",
+    "authority": "legacy"
+  }
+]
